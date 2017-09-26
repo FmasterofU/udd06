@@ -1,3 +1,6 @@
+#udd06
+Upravljanje digitalnim dokumentima Elasticsearch Analyzer / Digital documents management Elasticsearch Analyzer
+
 # DESCRIPTION:  
 SerbianAnalyzerElasticSearchPlugin is used for analyzing and preparing input text for indexing. 
 
