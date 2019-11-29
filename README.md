@@ -1,14 +1,10 @@
-#udd06
+# udd06
 Upravljanje digitalnim dokumentima Elasticsearch Analyzer / Digital documents management Elasticsearch Analyzer
 
-# DESCRIPTION:  
+### DESCRIPTION:  
 SerbianAnalyzerElasticSearchPlugin is used for analyzing and preparing input text for indexing. 
-
-This plugin has been written for ApacheLucene v4.9 and ElasticSearch v1.3.2.
-
-
-# TEXT PROCESS FLOW:
-
+> This plugin is written for **Java 13.0.1**, **Gradle 6.0** and **Elasticsearch 7.4.0**.
+### TEXT PROCESS FLOW:
 It uses StandardTokenizer for creating tokens out of input text. After tokenizer tokens go trough five filters:
 
     1. LowerCaseFilter - filter transforms all characters from token to lowercase.
@@ -17,36 +13,22 @@ It uses StandardTokenizer for creating tokens out of input text. After tokenizer
     4. SnowballFilter - stems tokens, taking only root of the word.
     5. RemoveAccentsFilter - replaces 'Dj' to 'D'.
     
-# HOW TO BUILD PLUGIN
+### HOW TO BUILD PLUGIN
+To build SerbianAnalyzer you will need Gradle. Position yourself in the root of the project and execute 
 
-To build SerbianAnalyzer you will need to have Apache Maven build tool installed.
-It can be downloaded from https://maven.apache.org/download.cgi.
-After installation, type 
+    ./gradlew clean build
+This will create distribution archive file located in `build/distributions/` named `serbian-analyzer-1.0-SNAPSHOT.zip`.
 
-    mvn -v 
-in terminal, just to be sure that installation was successful.
-Navigate to folder with SerbainPlugin, then run:
+### HOW TO SETUP PLUGIN TO WORK WITH ELASTICSEARCH
+1. Position yourself inside `/bin` directory of the elasticsearch root and execute
+    
+        ./elasticsearch-plugin install file:<absolute path of distribution archive>
+2. Run elasticsearch server
+3. Issue an `mapping` query on elasticsearch server:
 
-    mvn package
-Maven will create 'target' folder in SerbianPlugin directory. Navigate to 
-target/release/. Elasticsearch-SerbianPlugin-1.3.2.zip will be created there.
+        curl -H 'Content-Type: application/json' -X PUT -D '{"mappings":{"properties":{"content":{"type":"text","fields":{"sr":{"type":"text","analyzer":"serbian"},"en":{"type":"text","analyzer":"english"}}}}}}' http://localhost:9200/tweet
+Afterwards, on creation of new `tweet` document, content field will be analyzed by default analyzer for english and custom serbian, which was installed as a plugin. 
+### HOW TO REMOVE PLUGIN
+Position yourself inside `/bin` directory of the elasticsearch root and execute
 
-# HOW TO SETUP PLUGIN TO WORK WITH ELASTICSEARCH
-To add this plugin navigate to elasticsearch`s bin folder, and run:
-
-    plugin -url path_to_Elasticsearch-SerbianPlugin-1.3.2.zip --install serbian-plugin
-Open elasticsearch configuration from elasticsearch/config/elasticsearch.yml
-Find configuration for indexes, and put:
-
-    index.analysis.analyzer.default.type: serbian_analyzer
-Save configuration, go to the bin/plugin folder, and run:
-
-    plugin -l
-to check if plugin was successfully installed. 
-
-# HOW TO REMOVE PLUGIN
-Navigate to elasticsearch`s bin and run:
-
-    plugin -r serbian-plugin
-and remove configuration for serbian_analyzer from elasticsearch.yml.
-
+    ./elasticsearch-plugin remove serbian-analyzer

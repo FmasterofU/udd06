@@ -4,37 +4,36 @@
  * and open the template in the editor.
  */
 
-package org.elasticsearch.plugin.serbianplugin.analyzer;
+package org.elasticsearch.index.analysis.filter;
 
-import java.io.IOException;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
+import java.io.IOException;
+
 /**
  *
  * @author Milan Deket
+ * @author Marko Martonosi (update to es7.4)
  */
 public class RemoveAccentsFilter extends TokenFilter {
-    private LatCyrUtils LatCyrUtils;
     private CharTermAttribute termAttribute;
-    
-    public RemoveAccentsFilter(TokenStream input, boolean replaceDj) {
+
+    public RemoveAccentsFilter(TokenStream input) {
         super(input);
-        replaceDj = true;
-	termAttribute = (CharTermAttribute) input.addAttribute(CharTermAttribute.class); 
+        termAttribute = input.addAttribute(CharTermAttribute.class);
     }
-    
-    
+
+
     @Override
     public boolean incrementToken() throws IOException {
         if (input.incrementToken()) {
-        	String text = termAttribute.toString();
-        	termAttribute.setEmpty();
-        	termAttribute.append(LatCyrUtils.removeAccents(text).replace("Dj", "D").replace("dj", "d"));
-        	return true;
+            String text = termAttribute.toString();
+            termAttribute.setEmpty();
+            termAttribute.append(LatCyrFilterUtils.removeAccents(text).replace("Dj", "D").replace("dj", "d"));
+            return true;
         }
         return false;
     }
-
 }

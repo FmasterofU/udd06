@@ -38,7 +38,7 @@ define prelude as ( //definicija rutine koja ijekavicu i jekavicu svodi na ekavi
     do repeat goto ( //ponavljaj dok god ne dodjes do kraja stringa, odnosno dokle god pronalazis 'ije' u stringu
         ca ['ije'] ca <- 'e'  // ijekavica u ekavicu
     )
-	
+
 	do repeat goto ( //ponavljaj dok god ne dodjes do kraja stringa, odnosno dokle god pronalazis 'je' u stringu
         ca ['je'] ca <- 'e' // jekavica u ekavicu
     )
