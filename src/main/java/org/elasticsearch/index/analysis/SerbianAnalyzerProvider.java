@@ -16,7 +16,8 @@ public class SerbianAnalyzerProvider extends AbstractIndexAnalyzerProvider<Serbi
     public SerbianAnalyzerProvider(IndexSettings indexSettings, Environment environment, String name, Settings settings) {
         super(indexSettings, name, settings);
         analyzer = new SerbianAnalyzer();
-        analyzer.setVersion(version);
+        // TODO: fin a solution for version to be inported
+        // analyzer.setVersion(version);
     }
 
     @Override

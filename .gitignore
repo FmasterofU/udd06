@@ -3,3 +3,7 @@
 build/
 .local*
 *.iml
+/bin/
+.project
+.classpath
+.settings/*

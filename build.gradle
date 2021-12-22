@@ -5,11 +5,11 @@ buildscript {
         }
         mavenLocal()
         mavenCentral()
-        jcenter()
     }
     dependencies {
         classpath "de.thetaphi:forbiddenapis:2.7"
-        classpath "org.elasticsearch.gradle:build-tools:7.4.0"
+        classpath "org.elasticsearch.gradle:build-tools:7.16.2"
+        classpath "org.elasticsearch:elasticsearch:7.16.2"
     }
 }
 
@@ -20,9 +20,6 @@ apply plugin: "java"
 apply plugin: "idea"
 apply plugin: "elasticsearch.esplugin"
 
-licenseFile = rootProject.file("LICENSE.txt")
-noticeFile = rootProject.file("NOTICE.txt")
-
 esplugin {
     name "serbian-analyzer"
     description "Analyzer for serbian language"
@@ -32,9 +29,9 @@ esplugin {
 }
 
 dependencies {
-    compile "org.elasticsearch:elasticsearch:7.4.0"
-    compile "org.codehaus.groovy:groovy-all:2.3.11"
-    testCompile "org.elasticsearch.test:framework:7.4.0"
+    implementation "org.elasticsearch:elasticsearch:7.16.2"
+    implementation "org.codehaus.groovy:groovy-all:2.3.11"
+    testImplementation "org.elasticsearch.test:framework:7.16.2"
 }
 
 repositories {
@@ -43,17 +40,4 @@ repositories {
     }
     mavenCentral()
     mavenLocal()
-    jcenter()
 }
-
-forbiddenPatterns {
-    exclude "snowballSerbianStemmer.sbl"
-}
-
-// Ignore elasticsearch checkstyle, testing, licenses rules
-checkstyleMain.enabled = false
-checkstyleTest.enabled = false
-testingConventions.enabled = false
-dependencyLicenses.enabled = false
-thirdPartyAudit.enabled = false
-licenseHeaders.enabled = false
